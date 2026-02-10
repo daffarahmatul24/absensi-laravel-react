@@ -27,7 +27,7 @@ export default function SubmitAttendance() {
         longitude: "",
         address: "",
     });
-    
+
     /* OpenStreetMap + Nominatim API */
     async function getAddress(lat, lng) {
         try {
