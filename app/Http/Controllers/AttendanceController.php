@@ -12,7 +12,8 @@ class AttendanceController extends Controller
             'status'      => 'required',
             'description' => 'required_if:status,sick,leave,permit,business_trip,remote|max:500|nullable',
             'latitude'    => 'required',
-            'longitude'   => 'required',
+            'longitude'   => 'required',    
+            'address'     => 'required',
         ]);
 
         Attendance::create([
@@ -20,7 +21,8 @@ class AttendanceController extends Controller
             'status'      => $request->status,
             'description' => $request->description,
             'latitude'    => $request->latitude,
-            'longitude'   => $request->longitude,
+            'longitude'   => $request->longitude,   
+            'address'     => $request->address,
         ]);
 
         // return response()->json($attendance, 201);

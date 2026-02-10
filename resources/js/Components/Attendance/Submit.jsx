@@ -23,7 +23,30 @@ export default function SubmitAttendance() {
     } = useForm({
         status: "attend",
         description: "",
+        latitude: "",
+        longitude: "",
+        address: "",
     });
+    
+    /* OpenStreetMap + Nominatim API */
+    async function getAddress(lat, lng) {
+        try {
+            const res = await fetch(
+                `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`,
+                {
+                    headers: {
+                        "User-Agent": "absensi-app/1.0",
+                    },
+                }
+            );
+
+            const data = await res.json();
+
+            return data.display_name ?? "Alamat tidak ditemukan";
+        } catch (error) {
+            return "Gagal mengambil alamat";
+        }
+    }
 
     const submit = (e) => {
         e.preventDefault();
@@ -38,14 +61,27 @@ export default function SubmitAttendance() {
         });
 
         navigator.geolocation.getCurrentPosition(
-            (position) => {
+            async (position) => {
+                const lat = position.coords.latitude;
+                const lng = position.coords.longitude;
+
+                let address = "";
+
+                try {
+                    address = await getAddress(lat, lng);
+                } catch (error) {
+                    console.error(error);
+                    address = "Alamat tidak ditemukan";
+                }
+
                 Swal.close();
 
-                setData({
+                transform((data) => ({
                     ...data,
-                    latitude: position.coords.latitude,
-                    longitude: position.coords.longitude,
-                });
+                    latitude: lat,
+                    longitude: lng,
+                    address: address,
+                }));
 
                 post(route("attendances.submit"), {
                     preserveScroll: true,
@@ -86,47 +122,6 @@ export default function SubmitAttendance() {
             }
         );
     };
-
-    // const submit = (e) => {
-    //     e.preventDefault();
-
-    //     navigator.geolocation.getCurrentPosition(
-    //         function (position) {
-
-    //             setData("prepareData", {
-    //                 latitude: position.coords.latitude,
-    //                 longitude: position.coords.longitude,
-    //             });
-    //         },
-    //         function (error) {
-    //             alert("tidak ada lokasi");
-    //         }
-    //     );
-    // };
-
-    // useEffect(() => {
-    //     if (
-    //         data.prepareData.hasOwnProperty("latitude") &&
-    //         data.prepareData.hasOwnProperty("longitude")
-    //     ) {
-    //         transform((data) => ({
-    //             ...data.prepareData,
-    //             status: data.status,
-    //             description: data.description,
-    //         }));
-
-    //         post(route("attendances.submit"), {
-    //             preserveScroll: true,
-    //             onSuccess: () => {
-    //                 alert("Absensi berhasil disubmit");
-    //             },
-    //             onError: (errors) => {
-    //                 alert("Gagal submit absensi");
-    //             },
-    //         });
-    //     }
-    // }, [data.prepareData]);
-
     useEffect(() => {
         if (data.status === "attend") {
             setTransitioning(false);
