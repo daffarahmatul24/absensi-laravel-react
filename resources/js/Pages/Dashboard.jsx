@@ -1,8 +1,9 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
-import SubmitAttendance from "@/Components/Attendance/Submit";
+import Attendance from "@/Components/Attendance/Index";
 
-export default function Dashboard() {
+export default function Dashboard({ auth, submitted }) {
+    console.log(submitted);
     return (
         <AuthenticatedLayout
             header={
@@ -22,9 +23,9 @@ export default function Dashboard() {
                     </div>
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                         <section className="max-w-xl">
-                        <div className="p-6 text-gray-900">
-                            <SubmitAttendance />
-                        </div>
+                            <div className="p-6 text-gray-900">
+                                <Attendance />
+                            </div>
                         </section>
                     </div>
                 </div>

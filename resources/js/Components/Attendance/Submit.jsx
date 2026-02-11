@@ -9,7 +9,7 @@ import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { router } from "@inertiajs/react";
 
-export default function SubmitAttendance() {
+export default function Submit() {
     const [transitioning, setTransitioning] = useState("false");
 
     const {
