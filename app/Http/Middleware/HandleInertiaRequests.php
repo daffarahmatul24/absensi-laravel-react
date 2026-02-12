@@ -40,7 +40,9 @@ class HandleInertiaRequests extends Middleware
                 'error'   => fn()   => $request->session()->get('error'),
             ],
 
-            'submitted' => AttendanceController::isTodayAttendedSubmitted(),
+            'submitted' => fn() => $request->user()
+                ? AttendanceController::isTodayAttendedSubmitted()
+                : false,
 
         ];
     }
