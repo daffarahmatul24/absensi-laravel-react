@@ -13,6 +13,7 @@ import Swal from "sweetalert2";
 export default function UserCreate({ auth }) {
     const { data, setData, post, errors, processing, recentlySuccessful } =
         useForm({
+            uid: "",
             name: "",
             email: "",
             password: "",
@@ -88,6 +89,28 @@ export default function UserCreate({ auth }) {
                                 >
                                     <div>
                                         <InputLabel
+                                            htmlFor="uid"
+                                            value="RFID"
+                                        />
+
+                                        <TextInput
+                                            id="uid"
+                                            className="mt-1 block w-full"
+                                            value={data.uid}
+                                            onChange={(e) =>
+                                                setData("uid", e.target.value)
+                                            }
+                                            isFocused
+                                        />
+
+                                        <InputError
+                                            className="mt-2"
+                                            message={errors.uid}
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <InputLabel
                                             htmlFor="name"
                                             value="Name"
                                         />
@@ -100,7 +123,6 @@ export default function UserCreate({ auth }) {
                                                 setData("name", e.target.value)
                                             }
                                             required
-                                            isFocused
                                             autoComplete="name"
                                         />
 

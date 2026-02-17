@@ -28,6 +28,7 @@ class UserController extends Controller
             'email'                 => 'required|email|unique:users,email',
             'password'              => 'required|min:8',
             'password_confirmation' => 'required|same:password',
+            'uid'                   => 'nullable|unique:users,uid',
         ]);
 
         User::create($request->all());
@@ -47,6 +48,7 @@ class UserController extends Controller
         $request->validate([
             'name'                  => 'required',
             'email'                 => 'required|email|unique:users,email,' . $user->id,
+            'uid'                   => 'nullable|unique:users,uid,' . $user->id,
             'password'              => 'nullable|min:8',
             'password_confirmation' => 'nullable|same:password',
         ]);
@@ -54,6 +56,7 @@ class UserController extends Controller
         $user->update([
             'name'     => $request->name,
             'email'    => $request->email,
+            'uid'      => $request->uid,
             'role'     => $request->role,
             'password' => $request->password ? bcrypt($request->password) : $user->password,
         ]);
