@@ -12,9 +12,9 @@ import { use } from "react";
 import roles from "@/roles.json";
 
 export default function UserEdit({ auth, user }) {
-    const { data, setData, patch, errors, processing, recentlySuccessful } =
+    const { data, setData, patch, errors,reset, processing, recentlySuccessful } =
         useForm({
-            uid: user.uid,
+            uid: user.uid || "",
             name: user.name,
             email: user.email,
             password: "",
@@ -49,6 +49,20 @@ export default function UserEdit({ auth, user }) {
             },
         });
     };
+
+        window.Echo.channel("read-rfid-channel").listen(
+            "ReadRfidEvent",
+            (e) => {
+                if (e.code == "EXISTS") {
+                    errors.uid = e.message;
+                    reset("uid");
+                } else {
+                    errors.uid = "";
+                    reset("uid");
+                    setData("uid", e.uid);
+                }
+            }
+        );
 
     return (
         <AuthenticatedLayout

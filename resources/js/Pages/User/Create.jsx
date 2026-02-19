@@ -11,7 +11,7 @@ import roles from "@/roles.json";
 import Swal from "sweetalert2";
 
 export default function UserCreate({ auth }) {
-    const { data, setData, post, errors, processing, recentlySuccessful } =
+    const { data, setData, post, errors,reset, processing, recentlySuccessful } =
         useForm({
             uid: "",
             name: "",
@@ -57,6 +57,17 @@ export default function UserCreate({ auth }) {
             },
         });
     };
+
+    window.Echo.channel("read-rfid-channel").listen("ReadRfidEvent", (e) => {
+        if(e.code == "EXISTS"){
+            errors.uid = e.message;
+            reset('uid');
+        } else {
+            errors.uid="";
+            reset("uid");
+            setData("uid", e.uid);
+        }
+    });
 
     return (
         <AuthenticatedLayout
