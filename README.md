@@ -63,19 +63,6 @@ Pengembangan akan dilanjutkan pada iterasi berikutnya.
 
 ---
 
-## 📂 Struktur Project
-
-absensi-laravel-react
-├── app/ \# Logic backend Laravel
-├── routes/ \# Routing API & web
-├── database/ \# Migration & seeder
-├── resources/js/ \# React frontend
-├── public/ \# Public assets
-├── storage/ \# Logs & cache
-└── README.md \# Dokumentasi project
-
----
-
 ## ⚙️ Instalasi
 
 ### 1. Clone Repository
