@@ -1,5 +1,6 @@
 import mysql.connector
 import uuid
+
 connection = mysql.connector.connect(
     host='localhost',
     user='root',
@@ -17,14 +18,17 @@ def fetchUser(userId):
     cursor.execute("SELECT * FROM users WHERE id = %s", (userId,))
     return cursor.fetchone()
 
-def storeAttendace(userId):
+def storeAttendance(userId):
     cursor = connection.cursor()
     query = "INSERT INTO attendances (id, user_id, status, description) VALUES (%s, %s, %s, %s)"
     values = (str(uuid.uuid4()), userId, 'attend', 'face recognition')
     cursor.execute(query,values )
     connection.commit()
+    
+# storeAttendance(2)
+# user = fetchUser(1)
+# print(user['name'])
 
-storeAttendace(1)
 
 
 
