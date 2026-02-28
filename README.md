@@ -69,15 +69,15 @@ Pengembangan akan dilanjutkan pada iterasi berikutnya.
 
 🏗️ Arsitektur Sistem
 
-Frontend (React + Inertia)
-          ↓
-Backend API (Laravel)
-          ↓
-       Database (MySQL)
+Frontend (React + Inertia)  
+↓  
+Backend API (Laravel)  
+↓  
+Database (MySQL)  
 
-Face Recognition Engine (Python + OpenCV)
-          ↑
-       Webcam Capture
+Face Recognition Engine (Python + OpenCV)  
+↑  
+Webcam Capture 
 
 ---
 
