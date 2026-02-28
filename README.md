@@ -131,7 +131,8 @@ feature/rfid-absensi → RFID system (PENDING)
 -   [x] Autentikasi user
 -   [x] Dashboard absensi
 -   [x] WebSocket realtime
--   [ ] Face Recognition 
+-   [ ] RFID
+-   [x] Face Recognition 
 
 
 ---
