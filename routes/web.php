@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
@@ -25,6 +26,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/users/store', [UserController::class, 'store'])->name('users.store');
     Route::get('/users/edit/{user}', [UserController::class, 'edit'])->name('users.edit');
     Route::patch('/users/update/{user}', [UserController::class, 'update'])->name('users.update');
+    Route::post('/users/take-photo/{userId}', [UserController::class, 'takePhoto'])->name('users.takePhoto');
+
 });
 
 Route::middleware('auth')->group(function () {
@@ -34,6 +37,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/attendances', [\App\Http\Controllers\AttendanceController::class, 'index'])->name('attendances.index');
     Route::post('/attendances/submit', [\App\Http\Controllers\AttendanceController::class, 'submit'])->name('attendances.submit');
+    Route::post('/attendances/test-facial-recognition', [AttendanceController::class, 'testFacialRecognition'])->name('attendances.testFacialRecognition');
 
 });
 

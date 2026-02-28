@@ -1,5 +1,7 @@
 import cv2
 import os
+import sys
+import faceTraining
 
 cam = cv2.VideoCapture(0)
 cam.set(3, 640) # set video width
@@ -7,7 +9,8 @@ cam.set(4, 480) # set video height
 
 faceDetector = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 
-faceId = input('\n Enter user id an press <return> ===> ')
+# faceId = input('\n Enter user id an press <return> ===> ')
+faceId = sys.argv[1]
 
 count = 0
 while(True):
@@ -35,6 +38,10 @@ while(True):
         break
     elif count == 30:
         break
+    
+#Training Data
+faceTraining.training()
+    
 print("\n [INFO] Exiting Program and cleanup stuff")
 cam.release()
 cv2.destroyAllWindows()

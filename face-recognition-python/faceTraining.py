@@ -32,10 +32,7 @@ def getImageAnLabels(path):
                 ids.append(int(dir))
     return faceSamples, ids
 
-faces, ids = getImageAnLabels(path)
-
-recognizer.train(faces, np.array(ids))
-
-recognizer.save('trainer/trainer.yml')
-
-print("\n [INFO] {0} faces trained. Exiting Program".format(len(np.unique(ids))))
+def training():
+    faces, ids = getImageAnLabels(path)
+    recognizer.train(faces, np.array(ids))
+    recognizer.save('trainer/trainer.yml')

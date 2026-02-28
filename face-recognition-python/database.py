@@ -25,10 +25,6 @@ def storeAttendance(userId):
     cursor.execute(query,values )
     connection.commit()
     
-# storeAttendance(2)
-# user = fetchUser(1)
-# print(user['name'])
-
 
 
 

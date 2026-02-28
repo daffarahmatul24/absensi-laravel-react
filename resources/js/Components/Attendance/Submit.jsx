@@ -8,8 +8,10 @@ import Selectbox from "@/Components/Selectbox";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { router } from "@inertiajs/react";
+import ButtonRunPython from "@/Components/ButtonRunPython";
 
 export default function Submit() {
+    
     const [transitioning, setTransitioning] = useState("false");
 
     const {
@@ -37,7 +39,7 @@ export default function Submit() {
                     headers: {
                         "User-Agent": "absensi-app/1.0",
                     },
-                }
+                },
             );
 
             const data = await res.json();
@@ -82,7 +84,7 @@ export default function Submit() {
                     longitude: lng,
                     address: address,
                 }));
-
+                //absensi manual
                 post(route("attendances.submit"), {
                     preserveScroll: true,
                     onSuccess: () => {
@@ -107,6 +109,7 @@ export default function Submit() {
                     },
                 });
             },
+
             () => {
                 Swal.fire({
                     icon: "warning",
@@ -119,7 +122,7 @@ export default function Submit() {
                 enableHighAccuracy: true,
                 timeout: 10000,
                 maximumAge: 0,
-            }
+            },
         );
     };
     useEffect(() => {
@@ -129,51 +132,103 @@ export default function Submit() {
             setTransitioning(true);
         }
     }, [data.status]);
-
     return (
-        <form onSubmit={submit} className="mt-6 space-y-6">
-            <div>
-                <InputLabel htmlFor="info" value="Silahkan lakukan absensi" />
+        <>
+            <div className="mt-6 space-y-6">
+                {/* ===== Absensi Manual ===== */}
+                <div className="bg-white rounded-xl shadow p-6">
+                    <form onSubmit={submit} className="space-y-6">
+                        <div>
+                            <InputLabel
+                                htmlFor="info"
+                                value="Silahkan lakukan absensi"
+                            />
 
-                <Selectbox
-                    onChange={(e) => setData("status", e.target.value)}
-                    className="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full"
-                    options={[
-                        { value: "attend", label: "Hadir" },
-                        { value: "leave", label: "Cuti" },
-                        { value: "sick", label: "Sakit" },
-                        { value: "permit", label: "Izin" },
-                        { value: "business_trip", label: "Perjalanan Dinas" },
-                        {
-                            value: "remote",
-                            label: "Kerja Remote (diluar kantor)",
-                        },
-                    ]}
-                />
-                <InputError className="mt-2" message={errors.status} />
-            </div>
-            <Transition
-                show={transitioning}
-                enter="transition ease-in-out"
-                enterFrom="opacity-0"
-                leave="transition ease-in-out"
-                leaveTo="opacity-0"
-            >
-                <div>
-                    <InputLabel htmlFor="description" value="Penjelasan" />
+                            <Selectbox
+                                onChange={(e) =>
+                                    setData("status", e.target.value)
+                                }
+                                className="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full"
+                                options={[
+                                    { value: "attend", label: "Hadir" },
+                                    { value: "leave", label: "Cuti" },
+                                    { value: "sick", label: "Sakit" },
+                                    { value: "permit", label: "Izin" },
+                                    {
+                                        value: "business_trip",
+                                        label: "Perjalanan Dinas",
+                                    },
+                                    {
+                                        value: "remote",
+                                        label: "Kerja Remote (diluar kantor)",
+                                    },
+                                ]}
+                            />
+                            <InputError
+                                className="mt-2"
+                                message={errors.status}
+                            />
+                        </div>
 
-                    <TextInput
-                        onChange={(e) => setData("description", e.target.value)}
-                        className="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full"
-                    />
+                        <Transition
+                            show={transitioning}
+                            enter="transition ease-in-out"
+                            enterFrom="opacity-0"
+                            leave="transition ease-in-out"
+                            leaveTo="opacity-0"
+                        >
+                            <div>
+                                <InputLabel
+                                    htmlFor="description"
+                                    value="Penjelasan"
+                                />
 
-                    <InputError className="mt-2" message={errors.description} />
+                                <TextInput
+                                    onChange={(e) =>
+                                        setData("description", e.target.value)
+                                    }
+                                    className="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full"
+                                />
+
+                                <InputError
+                                    className="mt-2"
+                                    message={errors.description}
+                                />
+                            </div>
+                        </Transition>
+
+                        <div className="flex items-center gap-4">
+                            <PrimaryButton disabled={processing}>
+                                Absensi Manual
+                            </PrimaryButton>
+                        </div>
+                    </form>
                 </div>
-            </Transition>
 
-            <div className="flex items-center gap-4">
-                <PrimaryButton disabled={processing}>Absensi</PrimaryButton>
+                {/* ===== Absensi Dengan Wajah ===== */}
+                <div className="bg-white rounded-xl shadow p-6 flex flex-col justify-between">
+                    <div>
+                        <h3 className="text-lg font-semibold mb-2">
+                            Absensi Dengan Wajah
+                        </h3>
+
+                        <p className="text-sm text-gray-500 mb-6">
+                            Pastikan wajah menghadap kamera dengan pencahayaan
+                            cukup
+                        </p>
+                    </div>
+
+                    <div className="flex items-center gap-4">
+                        <ButtonRunPython
+                            label="Scan Wajah & Absen"
+                            routeUrl="attendances.testFacialRecognition"
+                            messageSuccess="Wajah dikenali, absensi berhasil"
+                            messageFailed="Wajah tidak dikenali"
+                            className="flex items-center gap-4"
+                        />
+                    </div>
+                </div>
             </div>
-        </form>
+        </>
     );
 }
