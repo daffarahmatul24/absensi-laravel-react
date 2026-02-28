@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Symfony\Component\Process\Process;
 
 class UserController extends Controller
 {
@@ -60,4 +61,37 @@ class UserController extends Controller
 
         return redirect()->route('users');
     }
+
+    public function takePhoto(Request $request, $userId)
+    {
+        $process = new Process(['C:\Users\daffa\AppData\Local\Python\bin\python.exe',
+            'saveDataset.py',
+            $userId],
+            env: [
+                'SYSTEMROOT' => getenv('SYSTEMROOT'),
+            ]);
+        $process->setWorkingDirectory('D:/laragon/www/absensi/face-recognition-python');
+        $process->run();
+
+        if (! $process->isSuccessful()) {
+            return $process;
+        }
+    }
+
+    public function testFacialRecognition(Request $request)
+    {
+        $process = new Process(['C:\Users\daffa\AppData\Local\Python\bin\python.exe',
+            'facialRecognition.py'],
+            env: [
+                'SYSTEMROOT' => getenv('SYSTEMROOT'),
+            ]);
+        $process->setWorkingDirectory('D:/laragon/www/absensi/face-recognition-python');
+        popen("start cmd /k ...", "r");
+
+
+        if (! $process->isSuccessful()) {
+            return $process;
+        }
+    }
+
 }
